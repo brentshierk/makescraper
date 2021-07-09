@@ -1,30 +1,60 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	
 
 	"github.com/gocolly/colly"
 )
-
+type Coin struct{
+	Coin_rank  string
+	Coin_image string
+	Coin_name string 
+	Coin_price string 
+	Coin_1hr string
+	Coin_24hr string
+	Coin_7d string
+}
+type Counter struct{
+	counter int
+}
+func (self Counter) currentValue() int {
+	return self.counter
+}
+func (self *Counter) increment() {
+	self.counter++
+}
 // main() contains code adapted from example found in Colly's docs:
 // http://go-colly.org/docs/examples/basic/
 func main() {
-	// Instantiate default collector
+	
+pi:= Counter{0}
+pi.increment()
+	
 	c := colly.NewCollector()
 
-	// On every a element which has href attribute call callback
-	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
-                link := e.Attr("href")
-
-		// Print link
-                fmt.Printf("Link found: %q -> %s\n", e.Text, link)
+	c.OnHTML("tbody tr", func(e *colly.HTMLElement, ) {
+		newCoin := &Coin{
+			Coin_rank : e.ChildText(".cmc-table__cell cmc-table__cell--sticky cmc-table__cell--sortable cmc-table__cell--left cmc-table__cell--sort-by__rank"),
+			Coin_name : e.ChildText(".cmc-table__column-name"),
+			Coin_image : e.ChildText(".cmc-static-icon cmc-static-icon"),
+			Coin_price : e.ChildAttr(".cmc-table__cell--sort-by__price","price"),
+			Coin_1hr : e.ChildText(".cmc-table__cell--sort-by__percent-change-1-h"),
+			Coin_24hr : e.ChildText(".cmc-table__cell--sort-by__percent-change-24-h"),
+			Coin_7d : e.ChildText(".cmc-table__cell--sort-by__percent-change-7-d"),
+			
+			
+		}
+		// newCoin.increment()
+		t,err := json.Marshal(newCoin)
+		if err != nil{
+			fmt.Printf("error: %s",err)
+		}
+		fmt.Println(string(t))
 	})
 
-	// Before making a request print "Visiting ..."
-	c.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL.String())
-	})
+	c.Visit("https://coinmarketcap.com/all/views/all/")
 
-	// Start scraping on https://hackerspaces.org
-	c.Visit("https://hackerspaces.org/")
+	
 }
