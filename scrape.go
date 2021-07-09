@@ -24,10 +24,7 @@ func (self Counter) currentValue() int {
 }
 func (self *Counter) increment() {
 	self.counter++
-	abc123
-	2
-	2
-	2
+	
 }
 // main() contains code adapted from example found in Colly's docs:
 // http://go-colly.org/docs/examples/basic/
