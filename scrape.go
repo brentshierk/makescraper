@@ -3,35 +3,32 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	
+	//"os"
+	// "fmt"
+
+	//"io/ioutil"
 	"time"
+
 	"github.com/gocolly/colly"
+	//"log"
 )
 type Coin struct{
-	Coin_rank  string
+	Coin_rank  string`json:"Coin_rank"`
 	//Coin_image string
-	Coin_name string 
-	Coin_price string 
-	Coin_1hr string
-	Coin_24hr string
-	Coin_7d string
+	Coin_name string `json:"Coin_name"`
+	Coin_price string `json:"Coin_price"`
+	Coin_1hr string`json:"Coin_1hr"`
+	Coin_24hr string`json:"Coin_24hr"`
+	Coin_7d string`json:"Coin_7d"`
 }
-// type Counter struct{
-// 	counter int
-// }
-// func (self Counter) currentValue() int {
-// 	return self.counter
-// }
-// func (self *Counter) increment() {
-// 	self.counter++
-	
-// }
-// main() contains code adapted from example found in Colly's docs:
-// http://go-colly.org/docs/examples/basic/
+
 func main() {
-	
-// pi:= Counter{0}
-// pi.increment()
+	// fName := "cryptocoinmarketcap.json"
+	// file, err := os.Create(fName)
+	// if err != nil {
+	// 	log.Fatalf("Cannot create file %q: %s\n", fName, err)
+	// 	return
+	// }
 	
 	c := colly.NewCollector()
 
@@ -47,15 +44,23 @@ func main() {
 			
 			
 		}
-		// newCoin.increment()
+		//usign time.sleep to allow for scraper to grab all of the top 20 coins
+		time.Sleep(200)
+		
+		//struct to json 
+		
 		t,err := json.Marshal(newCoin)
 		if err != nil{
 			fmt.Printf("error: %s",err)
 		}
 		fmt.Println(string(t))
+		
+		
+		
 	})
 
 	c.Visit("https://coinmarketcap.com/all/views/all/")
 
 	
 }
+
