@@ -37,10 +37,10 @@ pi.increment()
 
 	c.OnHTML("tbody tr", func(e *colly.HTMLElement, ) {
 		newCoin := &Coin{
-			Coin_rank : e.ChildText(".cmc-table__cell cmc-table__cell--sticky cmc-table__cell--sortable cmc-table__cell--left cmc-table__cell--sort-by__rank"),
+			Coin_rank : e.ChildText(".cmc-table__cell--sort-by__rank"),
 			Coin_name : e.ChildText(".cmc-table__column-name"),
-			Coin_image : e.ChildText(".cmc-static-icon cmc-static-icon"),
-			Coin_price : e.ChildAttr(".cmc-table__cell--sort-by__price","price"),
+			Coin_image : e.ChildAttr(".cmc-static-icon-1","img"),
+			Coin_price : e.ChildText(".cmc-table__cell--sort-by__price"),
 			Coin_1hr : e.ChildText(".cmc-table__cell--sort-by__percent-change-1-h"),
 			Coin_24hr : e.ChildText(".cmc-table__cell--sort-by__percent-change-24-h"),
 			Coin_7d : e.ChildText(".cmc-table__cell--sort-by__percent-change-7-d"),
